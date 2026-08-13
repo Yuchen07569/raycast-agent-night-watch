@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
   createSingleFlight,
   shouldToggleFromMenuBar,
@@ -21,6 +21,26 @@ describe("menu-bar launch single flight", () => {
     expect(first).toBe(42);
     expect(second).toBe(42);
     expect(calls).toBe(1);
+  });
+
+  it("allows a later menu-bar click after the dedupe window", async () => {
+    vi.useFakeTimers();
+    const runOnce = createSingleFlight<number>();
+    let calls = 0;
+    const operation = async () => {
+      calls += 1;
+      return calls;
+    };
+
+    try {
+      expect(await runOnce(operation)).toBe(1);
+      expect(await runOnce(operation)).toBe(1);
+      await vi.advanceTimersByTimeAsync(1_000);
+      expect(await runOnce(operation)).toBe(2);
+      expect(calls).toBe(2);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });
 

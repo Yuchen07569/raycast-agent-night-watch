@@ -8,6 +8,8 @@
   menu instead of overriding them.
 - Removed two-second polling; hotkey and menu actions now redraw through the
   Raycast command lifecycle immediately after each completed operation.
+- Limited duplicate-mount suppression to one second so a later real click
+  always starts a new toggle operation.
 
 ## [0.1.3] - 2026-08-13
 
