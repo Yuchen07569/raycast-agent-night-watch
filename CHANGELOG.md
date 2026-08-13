@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3] - 2026-08-13
+
+- Fixed a stale steaming menu-bar icon after `SleepDisabled` had already
+  returned to `0`.
+- Added a two-second live status calibration while Raycast keeps the menu-bar
+  command loaded, with cleanup when the command unloads.
+
 ## [0.1.2] - 2026-08-13
 
 - Fixed a stale toggle lock that could make both the hotkey and menu unable to
