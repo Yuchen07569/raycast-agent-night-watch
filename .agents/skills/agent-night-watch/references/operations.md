@@ -2,7 +2,8 @@
 
 ## Install
 
-1. Run `scripts/preflight.sh` and require macOS plus Raycast.
+1. Run `/bin/sh scripts/preflight.sh` from the Skill directory and require
+   macOS plus Raycast.
 2. Prefer the official Raycast Store listing after the repository README links
    to it.
 3. Before Store approval, install the tagged source release:

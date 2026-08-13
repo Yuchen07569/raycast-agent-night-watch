@@ -19,7 +19,8 @@ Maintain the Raycast extension without taking control of the user's sleep state.
 
 ## Start every task
 
-Run `scripts/preflight.sh`. If it reports a non-macOS platform, stop. Summarize
+Run `/bin/sh scripts/preflight.sh` from this Skill directory. If it reports a
+non-macOS platform, stop. Summarize
 Raycast availability, `SleepDisabled`, and whether Agent Night Watch has local
 session state. Do not reinterpret cache state as system truth.
 

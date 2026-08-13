@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import os
 import re
 import sys
 from pathlib import Path
@@ -49,7 +48,7 @@ preflight = preflight_file.read_text(encoding="utf-8")
 for forbidden in ("sudo ", "pmset -a", "with administrator privileges"):
     if forbidden in preflight:
         fail(f"preflight contains forbidden write capability: {forbidden}")
-if not os.access(preflight_file, os.X_OK):
-    fail("preflight.sh must be executable")
+if not preflight.startswith("#!/bin/sh\n"):
+    fail("preflight.sh must use the portable /bin/sh interpreter")
 
 print("skill validation passed")

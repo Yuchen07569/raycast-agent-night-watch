@@ -2,7 +2,8 @@
 
 ## Coffee cup shows the wrong state
 
-1. Run the preflight script and treat `SleepDisabled` as authoritative.
+1. Run `/bin/sh scripts/preflight.sh` from the Skill directory and treat
+   `SleepDisabled` as authoritative.
 2. Ask the user to choose **Refresh Status** from the coffee-cup menu.
 3. If `SleepDisabled=1` without valid owned state, report external ownership.
    Do not claim Agent Night Watch is active.
