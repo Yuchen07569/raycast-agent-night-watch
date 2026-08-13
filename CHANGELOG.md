@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.1.5] - 2026-08-13
+
+- Removed the user-writable privileged guard script and embedded the fixed
+  guard program into the authorization command before the password dialog.
+- Stopped all privileged writes to user-owned session paths; root now only
+  reads a randomized stop signal and calls an explicit system-command allowlist.
+- Replaced root-created readiness files with `pmset -g` plus verified launcher
+  identity, and invalidated the previous session schema.
+- Added adversarial regression tests for mutable paths, symlink writes, shell
+  injection, command allowlisting, and embedded-shell syntax.
+
 ## [0.1.4] - 2026-08-13
 
 - Changed normal menu-bar interaction to a direct single-click toggle without

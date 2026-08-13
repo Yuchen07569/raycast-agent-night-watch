@@ -43,7 +43,7 @@ jobs:
       - name: Install ShellCheck
         run: sudo apt-get update && sudo apt-get install -y shellcheck
       - name: Check shell scripts
-        run: shellcheck raycast-extension/assets/night-watch-guard.sh .agents/skills/agent-night-watch/scripts/preflight.sh
+        run: shellcheck .agents/skills/agent-night-watch/scripts/preflight.sh
       - name: Validate Skill package
         run: python3 .github/scripts/validate_skill.py .agents/skills/agent-night-watch
       - name: Scan tracked files for common secrets
