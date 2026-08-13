@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.4] - 2026-08-13
+
+- Changed normal menu-bar interaction to a direct single-click toggle without
+  opening a second menu.
+- Kept external ownership and transition states behind a safe recovery/status
+  menu instead of overriding them.
+- Removed two-second polling; hotkey and menu actions now redraw through the
+  Raycast command lifecycle immediately after each completed operation.
+
 ## [0.1.3] - 2026-08-13
 
 - Fixed a stale steaming menu-bar icon after `SleepDisabled` had already

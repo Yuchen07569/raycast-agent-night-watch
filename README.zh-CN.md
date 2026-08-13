@@ -8,6 +8,7 @@ Agent Night Watch 是一个 Raycast 菜单栏开关，让本地 Agent 在 MacBoo
 
 - 无水汽咖啡杯：恢复正常合盖睡眠。
 - 带水汽咖啡杯：Agent 守夜已开启。
+- 正常状态下单击咖啡杯即可直接切换，不再弹出二级菜单。
 - 每次开启都会弹出 macOS 管理员授权。
 - 关闭本扩展创建的会话无需再次授权。
 - 不设置定时、低电量自动关闭、免密 sudo、特权助手或密码存储。
@@ -26,8 +27,11 @@ npm ci
 npm run dev
 ```
 
-在 Raycast 中启用 **Night Watch Menu Bar**；如需沿用快捷键，请把
-**Toggle Night Watch** 绑定为 `⌥S`。
+第一次运行 **Night Watch Menu Bar** 只会把咖啡杯放进菜单栏；之后单击杯子即可
+直接切换。如需沿用快捷键，请把 **Toggle Night Watch** 绑定为 `⌥S`。
+
+若睡眠状态由其他工具占用，或扩展正在切换中，点击咖啡杯会显示安全恢复/状态菜单，
+不会直接覆盖异常状态。
 
 ## 安装 Codex Skill
 

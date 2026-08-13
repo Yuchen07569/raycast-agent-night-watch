@@ -4,8 +4,11 @@
 
 1. Run `/bin/sh scripts/preflight.sh` from the Skill directory and treat
    `SleepDisabled` as authoritative.
-2. Ask the user to choose **Refresh Status** from the coffee-cup menu.
-3. If `SleepDisabled=1` without valid owned state, report external ownership.
+2. Ask the user to run **Night Watch Menu Bar** from Raycast root search once
+   to refresh the rendered cup without changing sleep state.
+3. In normal states, clicking the cup toggles directly and has no second menu.
+   A recovery/status menu appears only for external ownership or transitions.
+4. If `SleepDisabled=1` without valid owned state, report external ownership.
    Do not claim Agent Night Watch is active.
 
 ## Enable was canceled
@@ -16,11 +19,11 @@ macOS dialog.
 
 ## Disable did not finish
 
-Ask the user to reopen the menu and refresh. If the extension reports an owned
-session, ask them to select **Disable Agent Night Watch** again. If it reports
-external ownership, explain that **Restore Normal Sleep…** requires a separate
-confirmation and administrator authorization because it can override another
-tool.
+If the extension reports an owned session, ask the user to click the coffee cup
+once or press their Raycast hotkey again. If it reports external ownership,
+explain that **Restore Normal Sleep…** appears in the exceptional recovery menu
+and requires a separate confirmation and administrator authorization because it
+can override another tool.
 
 ## Shortcut behaves unexpectedly
 

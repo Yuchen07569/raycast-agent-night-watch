@@ -8,6 +8,7 @@ the source of truth instead of a normal idle-sleep assertion.
 
 - Empty coffee cup: normal closed-lid sleep.
 - Steaming coffee cup: Agent Night Watch is active.
+- Click the coffee cup once to toggle directly in normal states.
 - Enabling prompts for macOS administrator authorization every time.
 - Disabling an owned session does not ask for authorization again.
 - No timer, battery cutoff, password storage, privileged helper, or sudoers rule.
@@ -28,8 +29,12 @@ npm ci
 npm run dev
 ```
 
-Enable **Night Watch Menu Bar** in Raycast, then assign `⌥S` to **Toggle Night
-Watch** if you want the same keyboard shortcut.
+Run **Night Watch Menu Bar** once to place the coffee cup in the menu bar. After
+that, click the cup to toggle directly. Assign `⌥S` to **Toggle Night Watch** if
+you also want the keyboard shortcut.
+
+If macOS sleep is disabled by another tool or the extension is in a transition,
+clicking the cup opens a recovery/status menu instead of overriding that state.
 
 ## Install the Codex skill
 

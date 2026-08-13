@@ -1,5 +1,11 @@
 # Changelog
 
+## [Direct Coffee-Cup Toggle] - {PR_MERGE_DATE}
+
+- Click the coffee cup once to toggle Night Watch directly in normal states.
+- Keep external ownership and transition states behind a safe recovery menu.
+- Remove continuous two-second polling and redraw after completed operations.
+
 ## [Fixed Live Menu Status] - {PR_MERGE_DATE}
 
 - Fixed the steaming menu-bar icon remaining visible after normal sleep had
