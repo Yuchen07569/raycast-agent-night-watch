@@ -1,0 +1,11 @@
+{
+  "current_score": 0,
+  "candidate_score": 6,
+  "held_out_passed": true,
+  "regression_passed": true,
+  "security_passed": true,
+  "adversarial_review_passed": true,
+  "source_review_passed": true,
+  "rollback_ready": true,
+  "notes": "Six sanitized prompt cases passed static workflow review. There was no prior install-maintenance Skill; the candidate adds no system-write authority and can be removed independently of the Raycast extension."
+}

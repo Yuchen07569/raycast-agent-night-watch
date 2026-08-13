@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  raycast-extension:
+    runs-on: macos-14
+    defaults:
+      run:
+        working-directory: raycast-extension
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: raycast-extension/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Test
+        run: npm test
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
+      - name: Audit high-severity dependencies
+        run: npm audit --audit-level=high
+
+  skill-and-shell:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Install ShellCheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - name: Check shell scripts
+        run: shellcheck raycast-extension/assets/night-watch-guard.sh .agents/skills/agent-night-watch/scripts/preflight.sh
+      - name: Validate Skill package
+        run: python3 .github/scripts/validate_skill.py .agents/skills/agent-night-watch
+      - name: Scan tracked files for common secrets
+        run: python3 .github/scripts/check_for_secrets.py

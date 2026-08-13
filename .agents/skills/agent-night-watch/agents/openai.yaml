@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agent Night Watch"
+  short_description: "Install and troubleshoot the Raycast sleep switch"
+  default_prompt: "Use $agent-night-watch to install or troubleshoot the Raycast closed-lid sleep switch."
+policy:
+  allow_implicit_invocation: false

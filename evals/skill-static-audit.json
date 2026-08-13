@@ -1,0 +1,44 @@
+{
+  "source": "/Users/Admin/Projects/raycast-agent-night-watch/.agents/skills/agent-night-watch",
+  "audited_at": "2026-08-13T05:46:26+00:00",
+  "mode": "static-only-no-execution",
+  "tree_hash_sha256": "39e1b0ef70d2bdf01e3948b4ded04a87ab11db7597e388fc42ccd5253f550bd4",
+  "file_count": 7,
+  "total_bytes": 9176,
+  "licenses_found": [
+    "LICENSE"
+  ],
+  "symlinks": [],
+  "binary_or_large_files": [],
+  "pattern_findings": {
+    "network": [
+      {
+        "file": "references/operations.md",
+        "line": 9
+      },
+      {
+        "file": "references/security-and-provenance.md",
+        "line": 5
+      }
+    ],
+    "subprocess": [],
+    "dynamic_execution": [],
+    "credential": [
+      {
+        "file": "references/security-and-provenance.md",
+        "line": 8
+      },
+      {
+        "file": "references/security-and-provenance.md",
+        "line": 8
+      },
+      {
+        "file": "references/troubleshooting.md",
+        "line": 13
+      }
+    ],
+    "upload": [],
+    "prompt_injection": []
+  },
+  "warning": "Pattern matches are review leads, not proof of malicious behavior."
+}
