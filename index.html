@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Night Watch · 替 AI 守夜的咖啡杯</title>
+<meta name="description" content="Agent Night Watch 是一个 Raycast 菜单栏咖啡杯开关，合盖 MacBook 后长任务 Agent 照常继续跑，你安心睡觉。MIT 开源。">
+<style>
+  :root {
+    --bg: #0a0f1e;
+    --bg-soft: #101830;
+    --ink: #f2f4f8;
+    --muted: #9aa5c0;
+    --accent: #f5a623;   /* 琥珀咖啡 */
+    --accent-dim: #d98e16;
+    --line: #1e2a4a;
+    --card: #111a33;
+    --ok: #4ade80;
+    --radius: 14px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    min-height: 88vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding: 5rem 1.5rem 4rem;
+    overflow:hidden;
+  }
+  .hero-glow {
+    position:absolute; top:-20%; left:50%; transform:translateX(-50%);
+    width:640px; height:640px; border-radius:50%;
+    background: radial-gradient(circle, rgba(245,166,35,.16), transparent 65%);
+    pointer-events:none;
+  }
+  .cup {
+    width:96px; height:96px; margin-bottom:1.75rem; filter: drop-shadow(0 8px 30px rgba(245,166,35,.35));
+  }
+  .cup svg { width:100%; height:100%; display:block; }
+  .hero h1 {
+    font-size: clamp(2rem, 5.5vw, 3.4rem);
+    font-weight:800; letter-spacing:-.01em; line-height:1.15; max-width:14em;
+  }
+  .hero h1 .amber { color: var(--accent); }
+  .hero .sub {
+    margin-top:1.1rem; max-width:34em; color:var(--muted);
+    font-size: clamp(1rem, 2vw, 1.18rem);
+  }
+  .cta-row { margin-top:2.2rem; display:flex; gap:.9rem; flex-wrap:wrap; justify-content:center; }
+  .btn {
+    display:inline-flex; align-items:center; gap:.5rem;
+    padding:.78rem 1.5rem; border-radius:999px; font-weight:600;
+    transition:transform .15s, box-shadow .15s, background .15s;
+  }
+  .btn-primary { background:var(--accent); color:#141414; box-shadow:0 8px 24px rgba(245,166,35,.3); }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 12px 30px rgba(245,166,35,.4); text-decoration:none; }
+  .btn-ghost { border:1px solid var(--line); color:var(--ink); }
+  .btn-ghost:hover { background:rgba(255,255,255,.04); transform:translateY(-2px); text-decoration:none; }
+  .hero .scroll { margin-top:3rem; color:var(--muted); font-size:.85rem; opacity:.7; letter-spacing:.08em; }
+
+  /* ---------- Layout container ---------- */
+  .wrap { max-width:1040px; margin:0 auto; padding:0 1.5rem; }
+  section { padding: 4.5rem 0; }
+
+  .kicker { color:var(--accent); font-size:.85rem; letter-spacing:.18em; text-transform:uppercase; font-weight:600; }
+  h2 { font-size: clamp(1.6rem, 3.4vw, 2.3rem); margin-top:.4rem; font-weight:800; letter-spacing:-.01em; }
+  .lead { color:var(--muted); margin-top:.8rem; max-width:36em; }
+
+  /* ---------- Problem / Story ---------- */
+  .problem { background:var(--bg-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .problem .story { margin-top:1.8rem; color:var(--ink); font-size:1.05rem; max-width:40em; line-height:1.8; }
+  .problem .story .dim { color:var(--muted); }
+
+  /* ---------- Feature cards ---------- */
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1.1rem; margin-top:2.2rem; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:1.4rem; }
+  .card h3 { font-size:1.06rem; margin-bottom:.5rem; }
+  .card p { color:var(--muted); font-size:.95rem; }
+  .pill { display:inline-block; font-size:.74rem; color:var(--accent); border:1px solid rgba(245,166,35,.25); padding:.15rem .55rem; border-radius:999px; margin-bottom:.7rem; font-weight:600; }
+
+  /* ---------- Scenes ---------- */
+  .scenes { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; margin-top:2.2rem; }
+  .scene { background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:1.3rem; }
+  .scene .ic { color:var(--accent); font-size:1.4rem; margin-bottom:.5rem; }
+  .scene h3 { font-size:1rem; margin-bottom:.35rem; }
+  .scene p { color:var(--muted); font-size:.92rem; }
+
+  /* ---------- Evidence ---------- */
+  .evidence { background:var(--bg-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1.2rem; margin-top:2.2rem; }
+  .stat { text-align:center; padding:1.6rem 1rem; background:var(--card); border:1px solid var(--line); border-radius:var(--radius); }
+  .stat .num { font-size:2.4rem; font-weight:800; color:var(--accent); letter-spacing:-.02em; }
+  .stat .lab { color:var(--muted); font-size:.9rem; margin-top:.3rem; }
+  .stat .ok { color:var(--ok); font-weight:600; font-size:.9rem; margin-top:.4rem; }
+
+  /* ---------- FAQ ---------- */
+  .faq { display:grid; gap:.8rem; margin-top:2rem; }
+  .qa { background:var(--card); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  .qa summary { cursor:pointer; padding:1.05rem 1.2rem; font-weight:600; font-size:1rem; list-style:none; display:flex; align-items:center; justify-content:space-between; }
+  .qa summary::-webkit-details-marker { display:none; }
+  .qa summary::after { content:"+"; color:var(--accent); font-weight:700; font-size:1.1rem; }
+  .qa[open] summary::after { content:"–"; }
+  .qa .a { padding:0 1.2rem 1.2rem; color:var(--muted); font-size:.95rem; }
+
+  /* ---------- Install / CTA ---------- */
+  .cta-final { text-align:center; }
+  .code {
+    display:block; background:#0a1020; border:1px solid var(--line); border-radius:10px;
+    padding:1.1rem 1.3rem; margin:1.8rem auto 0; max-width:34em; text-align:left;
+    font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:.88rem;
+    color:var(--ink); overflow-x:auto;
+  }
+  .code .c { color:var(--accent); }
+
+  footer { border-top:1px solid var(--line); padding:2.5rem 0; text-align:center; color:var(--muted); font-size:.88rem; }
+  footer a { color:var(--muted); }
+  footer a:hover { color:var(--accent); }
+
+  @media (max-width:640px){
+    .stroke { font-size:.9rem; }
+    .stats .num { font-size:2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="hero-glow"></div>
+  <div class="cup" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+      <g fill="none" stroke="#f5a623" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 27h32v16c0 8-6 14-14 14h-4c-8 0-14-6-14-14V27Z"/>
+        <path d="M46 32h4a8 8 0 0 1 0 16h-6"/>
+        <path d="M11 57h39"/>
+        <path d="M23 20c-5-6 5-7 0-14"/>
+        <path d="M35 20c-5-6 5-7 0-14"/>
+      </g>
+    </svg>
+  </div>
+  <h1>替 AI 守夜的<br><span class="amber">咖啡杯</span></h1>
+  <p class="sub">合盖 MacBook，长任务的 Agent 照常继续跑。<br>你安心睡，它盯着电脑不许睡。</p>
+  <div class="cta-row">
+    <a class="btn btn-primary" href="#install">从源码安装</a>
+    <a class="btn btn-ghost" href="https://github.com/Yuchen07569/raycast-agent-night-watch" target="_blank" rel="noopener">GitHub →
+    </a>
+  </div>
+  <div class="scroll">▼</div>
+</header>
+
+<!-- ================= Problem ================= -->
+<section class="problem">
+  <div class="wrap">
+    <span class="kicker">故事</span>
+    <h2>它是怎么来的</h2>
+    <div class="story">
+      有天晚上十一点，我把一份要跑很久的任务丢给 Codex，准备睡觉。<span class="dim">合上 MacBook，
+      屏幕一黑，任务就断了。开着屏幕，又晃得睡不着。</span>一个两难，卡了我一整晚。
+      <br><br>
+      它那么累了，就让它也喝点咖啡吧。<span class="dim">于是一个咖啡杯，成了我的守夜人。</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Features ================= -->
+<section>
+  <div class="wrap">
+    <span class="kicker">功能</span>
+    <h2>只有一个咖啡杯</h2>
+    <p class="lead">冒水汽 = 合盖继续跑；没水汽 = 正常睡眠。点一下开，点一下关。</p>
+    <div class="grid">
+      <div class="card"><span class="pill">一目了然</span><h3>水汽即状态</h3><p>咖啡杯冒着水汽，说明 Agent 有夜班守；水汽消失，电脑照常睡得安安静静。</p></div>
+      <div class="card"><span class="pill">一次点击</span><h3>单击切换</h3><p>正常状态下单击咖啡杯直接开关，不必进菜单，不必敲命令。</p></div>
+      <div class="card"><span class="pill">严格边界</span><h3>不碰密码</h3><p>不存密码、不配免密 sudo、不装常驻特权助手。每次开启都亲自授权。</p></div>
+      <div class="card"><span class="pill">真实状态</span><h3>读系统事实</h3><p>用 macOS SleepDisabled 作为事实源，而不是普通空闲睡眠的断言。</p></div>
+      <div class="card"><span class="pill">随时可退</span><h3>可恢复关闭</h3><p>点一下关掉，电脑立刻恢复正常合盖睡眠。随时给你自由。</p></div>
+      <div class="card"><span class="pill">与众不同</span><h3>不是 caffeinate</h3><p>普通工具防空闲睡眠，它显式控制全局合盖睡眠覆盖，针对合盖场景更准。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Scenes ================= -->
+<section class="evidence">
+  <div class="wrap">
+    <span class="kicker">场景</span>
+    <h2>什么时候用得上</h2>
+    <div class="scenes">
+      <div class="scene"><div class="ic">🌙</div><h3>睡前挂长任务</h3><p>合盖睡觉，让 Codex/Agent 跑完，第二天醒来收货。</p></div>
+      <div class="scene"><div class="ic">🚪</div><h3>出门交给它</h3><p>任务挂上再合盖离开，回来已经跑完。</p></div>
+      <div class="scene"><div class="ic">⚙️</div><h3>持续运行服务</h3><p>需要常驻的本地服务或长任务，合盖保持在线。</p></div>
+      <div class="scene"><div class="ic">🛌</div><h3>不用守着屏幕</h3><p>不再盯着进度条，合盖让电脑自己干活。</p></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="num">241<span style="font-size:1.2rem">s</span></div><div class="lab">合盖实测时长</div><div class="ok">最大心跳间隔 6 秒</div></div>
+      <div class="stat"><div class="num">92<span style="font-size:1.2rem">s</span></div><div class="lab">关闭后睡眠</div><div class="ok">心跳空档 95 秒</div></div>
+      <div class="stat"><div class="num">24</div><div class="lab">自动化测试</div><div class="ok">全部通过</div></div>
+      <div class="stat"><div class="num">5<span style="font-size:1.2rem">/5</span></div><div class="lab">安全审查复评</div><div class="ok">高危问题已关闭</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section>
+  <div class="wrap">
+    <span class="kicker">FAQ</span>
+    <h2>常见疑问</h2>
+    <div class="faq">
+      <details class="qa"><summary>会一直耗电吗？</summary><div class="a">只在开启时保持合盖运行。任务跑完点一下关掉，就恢复正常合盖睡眠，不影响续航。</div></details>
+      <details class="qa"><summary>需要会写代码吗？</summary><div class="a">不用。装上 Raycast 扩展就能用，菜单栏点咖啡杯开关即可。</div></details>
+      <details class="qa"><summary>它对所有 Agent 都有效吗？</summary><div class="a">它控制的是 macOS 合盖睡眠本身，不只是某个 Agent。只要进程不被合盖睡眠打断，就能持续运行。</div></details>
+      <details class="qa"><summary>为什么不直接用 caffeinate？</summary><div class="a">caffeinate 通常防空闲睡眠，管不到 MacBook 合盖的睡眠逻辑。它显式控制 SleepDisabled，针对合盖场景更准。</div></details>
+      <details class="qa"><summary>它安全吗？会碰我的密码吗？</summary><div class="a">不做任何密码/凭据存储。开启触发 macOS 自带管理员授权，不配免密 sudo，不装特权助手。MIT 开源可审计。</div></details>
+      <details class="qa"><summary>会损坏电脑吗？</summary><div class="a">不会。它只切换一个系统睡眠开关。建议合盖运行时放通风处避免过热。</div></details>
+      <details class="qa"><summary>能和其他工具共用吗？</summary><div class="a">可以。它只控制合盖睡眠覆盖，不与 IDEs、终端、其他 Raycast 扩展冲突。</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Install CTA ================= -->
+<section id="install" class="cta-final" style="background:var(--bg-soft);border-top:1px solid var(--line);">
+  <div class="wrap">
+    <span class="kicker">开源</span>
+    <h2>合盖睡觉，它继续跑</h2>
+    <p class="lead" style="margin:1rem auto 0;">Agent Night Watch，MIT 开源。</p>
+    <pre class="code"><span class="c">$</span> git clone https://github.com/Yuchen07569/raycast-agent-night-watch.git
+<span class="c">$</span> cd raycast-agent-night-watch/raycast-extension
+<span class="c">$</span> npm ci
+<span class="c">$</span> npm run dev</pre>
+    <div class="cta-row" style="margin-top:1.6rem;">
+      <a class="btn btn-primary" href="https://github.com/Yuchen07569/raycast-agent-night-watch" target="_blank" rel="noopener">给它一颗星 ★</a>
+    </div>
+    <p class="sub" style="margin-top:1.6rem;font-size:.95rem;">你管睡，它管跑。天亮，交货。</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Agent Night Watch · MIT 开源 · <a href="https://github.com/Yuchen07569/raycast-agent-night-watch" target="_blank" rel="noopener">GitHub 仓库</a></p>
+    <p style="margin-top:.4rem;opacity:.75;">一只替 AI 守夜的咖啡杯，写给所有在夜里让 Agent 加班的人。</p>
+  </div>
+</footer>
+
+</body>
+</html>
