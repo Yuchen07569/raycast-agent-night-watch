@@ -161,6 +161,7 @@ class TrayApplication {
     if (message == WM_NCCREATE) {
       const auto* create = reinterpret_cast<CREATESTRUCTW*>(l_param);
       self = static_cast<TrayApplication*>(create->lpCreateParams);
+      self->window_ = window;
       SetWindowLongPtrW(window, GWLP_USERDATA,
                         reinterpret_cast<LONG_PTR>(self));
     }
@@ -314,8 +315,48 @@ class TrayApplication {
       release_system_required(power_request_);
       return true;
     }
+    if (!record) {
+      release_system_required(power_request_);
+      if (!interactive) return true;
+      const int choice = MessageBoxW(
+          window_,
+          L"The recovery journal is damaged, so Agent Night Watch cannot "
+          L"determine which settings it owns. Exit without changing any power "
+          L"settings?\n\nThe journal will be left in place for diagnosis.",
+          L"Exit Without Recovery", MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2);
+      return choice == IDYES;
+    }
+
+    const bool owned_by_this_instance =
+        record->instance_id == instance_id_ && record->owner_pid == owner_pid_;
+    if (!owned_by_this_instance) {
+      release_system_required(power_request_);
+      if (!interactive) return true;
+      const int choice = MessageBoxW(
+          window_,
+          L"An unfinished session from a previous Agent Night Watch process is "
+          L"still recorded.\n\nYes: restore its original AC settings, then "
+          L"exit.\nNo: exit without changing those settings.\nCancel: keep "
+          L"Agent Night Watch open.",
+          L"Previous Session Still Recorded",
+          MB_YESNOCANCEL | MB_ICONWARNING | MB_DEFBUTTON3);
+      if (choice == IDNO) return true;
+      if (choice != IDYES) return false;
+      const OperationResult restored = restore_session(policy_, journal_);
+      if (restored.kind == OperationKind::Success ||
+          restored.kind == OperationKind::NoSession) {
+        return true;
+      }
+      show_error(L"Agent Night Watch will remain open because the previous "
+                 L"session could not be safely restored:\n\n" +
+                 operation_message(restored));
+      refresh_state();
+      return false;
+    }
+
     release_system_required(power_request_);
-    const OperationResult restored = restore_session(policy_, journal_);
+    const OperationResult restored = restore_session(
+        policy_, journal_, instance_id_, owner_pid_);
     if (restored.kind == OperationKind::Success ||
         restored.kind == OperationKind::NoSession) {
       return true;

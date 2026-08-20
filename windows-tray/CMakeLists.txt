@@ -49,7 +49,9 @@ if(WIN32)
   )
   if(MSVC)
     target_compile_options(agent-night-watch PRIVATE /W4 /WX /permissive- /EHsc /utf-8 /analyze)
-    target_link_options(agent-night-watch PRIVATE /SUBSYSTEM:WINDOWS)
+    # version.rc already embeds the explicit asInvoker application manifest.
+    # Disable the linker's generated manifest to avoid a duplicate resource.
+    target_link_options(agent-night-watch PRIVATE /SUBSYSTEM:WINDOWS /MANIFEST:NO)
     set_property(TARGET agent-night-watch PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
   endif()
   set_target_properties(agent-night-watch PROPERTIES OUTPUT_NAME "AgentNightWatch")
