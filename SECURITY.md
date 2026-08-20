@@ -1,6 +1,6 @@
 # Security policy
 
-## Power-control boundary
+## macOS power-control boundary
 
 Agent Night Watch calls only these privileged system commands:
 
@@ -39,9 +39,39 @@ cache is discarded rather than treated as permission to modify system state.
 Session schema changes invalidate older ownership records instead of handing
 their paths to a privileged process.
 
+## Windows power-control boundary
+
+The Windows portable utility is an `asInvoker` native Win32 executable. It
+does not request elevation or execute PowerShell, `powercfg`, a helper service,
+or a downloaded binary. It calls the documented PowrProf and power-request APIs
+directly.
+
+An owned Windows session changes only two AC values in the active power scheme:
+
+- automatic standby timeout becomes `0` (Never);
+- lid close action becomes `0` (Do Nothing) only when Windows reports a lid.
+
+DC/battery values are never written. The utility checks Group Policy access
+before writing, journals the original AC values before the first change, reads
+every value back, and rolls back the full transaction on failure. A
+`PowerRequestSystemRequired` request is held only while an owned session is
+active on AC power; it does not request that displays stay on.
+
+The same executable launches a no-window watchdog tied to the tray process and
+instance identifier. If the tray process exits unexpectedly, the watchdog
+restores only values that still match the values Agent Night Watch wrote.
+Externally changed values are reported and never overwritten. A checksum,
+strict parser, atomic replace, file-size limit, and reparse-point checks protect
+the recovery journal under `%LOCALAPPDATA%\AgentNightWatch`.
+
+The Windows invitation Beta is unsigned. Release artifacts must come from
+GitHub Actions, include SHA-256 and SPDX metadata, and remain labeled as Beta
+until a physical lid-close test passes. Do not tell users to disable
+SmartScreen, Defender, Smart App Control, or organizational policy.
+
 ## External state
 
-If `SleepDisabled=1` without a valid owned session, the extension reports that
+If macOS `SleepDisabled=1` without a valid owned session, the extension reports that
 another tool or leftover state owns the setting. Restoring normal sleep then
 requires a separate destructive confirmation and administrator authorization.
 

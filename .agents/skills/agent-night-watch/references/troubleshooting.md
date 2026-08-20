@@ -1,5 +1,10 @@
 # Troubleshooting
 
+Use the platform reported by preflight. Never translate a Windows journal into
+macOS ownership or a macOS cache into Windows ownership.
+
+## macOS
+
 ## Coffee cup shows the wrong state
 
 1. Run `/bin/sh scripts/preflight.sh` from the Skill directory and treat
@@ -36,3 +41,37 @@ caffeinate`; unrelated processes are outside this extension's ownership.
 Open the menu-bar command and refresh. A valid owned session should be recovered
 from its guarded process and cache, while stale cache must be discarded. Never
 create ownership based only on a PID file.
+
+## Windows
+
+### Cup shows paused
+
+`powerSource="battery"` intentionally pauses protection. The utility never
+changes DC values. Ask the user to connect AC power; do not modify battery
+policy for them.
+
+### Cup shows warning
+
+Compare the active power scheme, AC standby value, journal presence, and tray
+process from `preflight.ps1`. A changed scheme, Group Policy restriction,
+damaged journal, or externally changed AC value is not an owned active state.
+Ask the user to open **View Status** and use **Restore Original Power
+Settings…** if offered. Do not run `powercfg` to force a result.
+
+### App or watchdog exited
+
+Run preflight. A missing journal means no recorded recovery remains. If the
+journal is present, relaunch the official executable and let its recovery
+prompt read and verify the recorded values. Never delete the journal before a
+successful restore.
+
+### Lock and display off is unavailable
+
+The action is enabled only while Night Watch is active on AC power. It is
+deliberately disabled while off, paused on battery, or in a warning state.
+
+### Managed computer
+
+If Windows reports a Group Policy override or access restriction, stop. Agent
+Night Watch does not request administrator elevation or bypass organizational
+policy.

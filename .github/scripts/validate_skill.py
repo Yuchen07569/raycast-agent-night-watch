@@ -16,8 +16,9 @@ root = Path(sys.argv[1] if len(sys.argv) > 1 else ".agents/skills/agent-night-wa
 skill_file = root / "SKILL.md"
 metadata_file = root / "agents" / "openai.yaml"
 preflight_file = root / "scripts" / "preflight.sh"
+windows_preflight_file = root / "scripts" / "preflight.ps1"
 
-for required in (skill_file, metadata_file, preflight_file):
+for required in (skill_file, metadata_file, preflight_file, windows_preflight_file):
     if not required.is_file():
         fail(f"missing {required}")
 
@@ -50,5 +51,18 @@ for forbidden in ("sudo ", "pmset -a", "with administrator privileges"):
         fail(f"preflight contains forbidden write capability: {forbidden}")
 if not preflight.startswith("#!/bin/sh\n"):
     fail("preflight.sh must use the portable /bin/sh interpreter")
+
+windows_preflight = windows_preflight_file.read_text(encoding="utf-8")
+for forbidden in (
+    "PowerWrite",
+    "PowerSetActiveScheme",
+    "SetThreadExecutionState",
+    "powercfg /set",
+    "Start-Process -Verb RunAs",
+):
+    if forbidden.casefold() in windows_preflight.casefold():
+        fail(f"preflight.ps1 contains forbidden write capability: {forbidden}")
+if "PowerReadACValueIndex" not in windows_preflight:
+    fail("preflight.ps1 must read Windows AC power state")
 
 print("skill validation passed")

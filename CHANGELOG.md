@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0-beta.1] - Unreleased
+
+- Added a native, single-executable Windows x64 tray implementation independent
+  of Raycast and external runtimes.
+- Added AC-only automatic-sleep and lid-action transactions with read-back,
+  external-change detection, rollback, and same-binary crash watchdog.
+- Added locked display-off sessions, active/paused/warning tray states, Windows
+  core tests, MSVC static analysis, Defender scanning, SHA-256 packaging, and an
+  SPDX SBOM.
+- Expanded the maintenance Skill and documentation for safe macOS/Windows
+  platform routing.
+
 ## [0.1.5] - 2026-08-13
 
 - Removed the user-writable privileged guard script and embedded the fixed

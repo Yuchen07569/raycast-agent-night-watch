@@ -4,5 +4,12 @@
 .env.*
 node_modules/
 dist/
+.vs/
+out/
+windows-tray/build*/
+windows-tray/.cache/
+*.user
+*.pdb
+*.ilk
 coverage/
 .raycast-build/
