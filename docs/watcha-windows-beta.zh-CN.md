@@ -12,8 +12,11 @@
 - 一名能完成锁屏熄屏测试的台式机用户；
 - 愿意提供电脑型号、睡眠模式、心跳日志和操作反馈。
 
-当前版本尚未签名，可能出现 Windows SmartScreen 提示，因此不会在观猹公开提供
-正式下载，也不会要求参与者关闭 Defender、SmartScreen 或公司安全策略。测试包、
-SHA-256 校验值和测试步骤将通过项目 GitHub 预发布页面提供。
+当前版本尚未签名，可能出现 Windows SmartScreen 提示，因此观猹不直接托管安装
+文件，也不会要求参与者关闭 Defender、SmartScreen 或公司安全策略。受邀者请从
+[GitHub v0.2.0-beta.1 预发布页面](https://github.com/Yuchen07569/raycast-agent-night-watch/releases/tag/windows-v0.2.0-beta.1)
+下载测试包与 SHA-256，并严格按照
+[Windows 实机测试指南](https://github.com/Yuchen07569/raycast-agent-night-watch/blob/main/evals/windows-beta-test-guide.zh-CN.md)
+完成记录。
 
 在真实设备完成测试前，我们不会宣称 Windows 合盖功能已经正式可用。

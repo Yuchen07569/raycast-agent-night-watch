@@ -50,6 +50,10 @@ The Windows implementation is an invitation-only, unsigned Beta. It is a
 single native Win32 executable with no Electron, .NET, Python, installer,
 service, driver, or updater.
 
+Invited testers can use the
+[Windows v0.2.0-beta.1 prerelease](https://github.com/Yuchen07569/raycast-agent-night-watch/releases/tag/windows-v0.2.0-beta.1)
+after reading its unsigned-build warning and verifying the included SHA-256.
+
 - Left-click the tray cup to toggle.
 - Steaming cup: active on AC power.
 - Paused cup: enabled but currently on battery; DC settings are untouched.

@@ -44,6 +44,10 @@ npm run dev
 Windows 版本目前仅用于邀请测试，且尚未签名。它是单个原生 Win32 程序，不使用
 Electron、.NET、Python，不安装服务、驱动、更新器或额外运行时。
 
+受邀测试者可前往
+[Windows v0.2.0-beta.1 预发布页面](https://github.com/Yuchen07569/raycast-agent-night-watch/releases/tag/windows-v0.2.0-beta.1)，
+阅读未签名提示并核对 SHA-256 后再运行。
+
 - 左键托盘咖啡杯直接开关。
 - 有水汽：接电状态下正在守夜。
 - 暂停标记：已经开启，但当前使用电池；不会修改任何电池策略。
