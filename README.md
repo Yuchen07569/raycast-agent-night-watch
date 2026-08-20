@@ -58,8 +58,9 @@ service, driver, or updater.
 
 The Beta targets Windows 10 22H2 and Windows 11 on x64. A physical Windows lid
 test is still required before closed-lid support is presented as generally
-verified. Build and tester instructions are in
-[`windows-tray/README.md`](windows-tray/README.md).
+verified. Build details are in [`windows-tray/README.md`](windows-tray/README.md);
+invited testers should follow the
+[Chinese physical-device test guide](evals/windows-beta-test-guide.zh-CN.md).
 
 ## Install the Codex skill
 

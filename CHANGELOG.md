@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.2.0-beta.1] - Unreleased
+## [0.2.0-beta.1] - 2026-08-20
 
 - Added a native, single-executable Windows x64 tray implementation independent
   of Raycast and external runtimes.

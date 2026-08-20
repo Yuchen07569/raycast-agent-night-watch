@@ -51,7 +51,8 @@ Electron、.NET、Python，不安装服务、驱动、更新器或额外运行�
 - 右键选择“锁屏并熄灭显示器”，账户锁定后后台任务继续运行。
 
 Beta 首发支持 Windows 10 22H2、Windows 11 x64。在完成真实 Windows 笔记本
-合盖测试前，不会对外宣称合盖能力已经普遍验证。构建和测试说明见
+合盖测试前，不会对外宣称合盖能力已经普遍验证。受邀测试者请按照
+[Windows 实机测试指南](evals/windows-beta-test-guide.zh-CN.md)操作；构建说明见
 [`windows-tray/README.md`](windows-tray/README.md)。
 
 ## 安装 Codex Skill
