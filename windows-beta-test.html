@@ -34,8 +34,13 @@
 <main class="wrap">
   <a class="back" href="./#windows-beta">← 返回下载页</a>
   <span class="tag">Windows 邀请测试 · v0.2.0-beta.1</span>
-  <h1>跟着这 8 步完成测试</h1>
-  <p class="lead">建议用手机打开这份指引和测试问卷，在 Windows 电脑上操作。每完成一步就记录结果；中途停止也可以提交已经完成的部分。</p>
+  <h1>跟着问卷一步一步完成测试</h1>
+  <p class="lead">建议用手机打开飞书问卷，在 Windows 电脑上操作。问卷无需登录，会逐步提示需要记录的信息；中途停止也可以提交已经完成的部分。</p>
+
+  <div class="buttons">
+    <a class="btn primary" href="https://my.feishu.cn/share/base/form/shrcnoULuHL5RS4qGMTcQRfGAVh" target="_blank" rel="noopener">打开飞书分步测试问卷</a>
+  </div>
+  <p class="muted">答案保存在项目所有者的飞书表格中。请勿填写姓名、手机号、密码、设备序列号、私人路径或完整日志。</p>
 
   <div class="warning"><strong>先保证安全。</strong>笔记本必须接电并放在硬质、平整、通风的桌面上。不要放进包里，不要遮挡散热，不要关闭 SmartScreen、Defender、Smart App Control 或公司的安全策略。若校验失败、机身明显异常发热、出现警告状态或原设置无法恢复，请立即停止。</div>
 
@@ -54,7 +59,7 @@
 
   <section class="step">
     <h2>2. 记录原来的电源设置</h2>
-    <p>打开 Windows 电源设置，记下接电自动睡眠时间。笔记本还要记下接电和电池两种状态下的合盖动作。这里只记录，不要手动修改。</p>
+    <p>打开 Windows 电源设置，记下接电自动睡眠时间。笔记本还要记下接电状态下的合盖动作。这里只记录，不要手动修改。</p>
   </section>
 
   <section class="step">
@@ -64,38 +69,37 @@
 
   <section class="step">
     <h2>4. 开始写入心跳</h2>
-    <p>在普通 PowerShell 窗口运行下面的命令并保持窗口打开。结束时按 <code>Ctrl+C</code>。</p>
-    <pre>$path = "$env:USERPROFILE\Desktop\agent-night-watch-windows-heartbeat-$(Get-Date -Format yyyyMMdd-HHmmss).log"
-while ($true) {
-  "$(Get-Date -Format o) pid=$PID" | Add-Content -LiteralPath $path
-  Start-Sleep -Seconds 5
-}</pre>
+    <p>只有准备测试合盖或锁屏熄屏时才需要心跳。在普通 PowerShell 窗口运行下面这一整行并保持窗口打开。结束时按 <code>Ctrl+C</code>。</p>
+    <pre>$p="$env:USERPROFILE\Desktop\agent-night-watch-heartbeat.log"; while($true){$t=Get-Date -Format o; $t | Tee-Object -FilePath $p -Append; Start-Sleep -Seconds 5}</pre>
   </section>
 
   <section class="step">
-    <h2>5. 笔记本接电合盖 10 分钟</h2>
-    <p>笔记本保持接电，开启守夜并确认咖啡杯有水汽。合盖 10 分钟，再开盖检查心跳日志。正常结果是没有接近 10 分钟的时间空档。若机身明显异常发热，请立即开盖并关闭守夜。台式机跳过这一步。</p>
+    <h2>5. 可选：笔记本接电合盖 5 分钟</h2>
+    <p>笔记本保持接电，开启守夜并确认咖啡杯有水汽。合盖 5 分钟，再开盖检查心跳日志。相邻时间通常约 5 秒，没有超过 15 秒的空档可在问卷中选择通过。若机身明显异常发热，请立即开盖并关闭守夜。台式机或不方便合盖的测试者跳过这一步。</p>
   </section>
 
   <section class="step">
-    <h2>6. 检查锁屏熄屏</h2>
-    <p>接电运行时，右键咖啡杯选择 <strong>Lock and Turn Off Displays</strong>，等待 10 分钟后唤醒显示器。Windows 应要求密码或 Windows Hello，心跳不应出现 10 分钟空档。</p>
+    <h2>6. 可选：检查锁屏熄屏</h2>
+    <p>接电运行时，右键咖啡杯选择 <strong>Lock and Turn Off Displays</strong>，等待 5 分钟后唤醒显示器。Windows 应要求密码或 Windows Hello，心跳不应出现超过 15 秒的空档。</p>
   </section>
 
   <section class="step">
-    <h2>7. 可选的拔电对照</h2>
-    <p>这一步只给笔记本。接电开启后合盖，再拔掉电源，等待超过原电池睡眠时间。设备应改用原电池策略，程序进入电池暂停状态。无法安全完成就选择“未执行”。</p>
+    <h2>7. 可选：开盖观察拔电暂停</h2>
+    <p>这一步只给笔记本，并且全程保持开盖。接电开启后拔掉充电器，只观察咖啡杯是否进入暂停状态；重新接电后，水汽应恢复。不需要等待电脑睡眠，也不要修改电池设置。无法安全完成就选择“未执行”。</p>
   </section>
 
   <section class="step">
     <h2>8. 关闭并逐项确认恢复</h2>
     <p>左键咖啡杯关闭守夜，再右键选择 <strong>Exit</strong>。逐项对比测试前记录的接电睡眠时间和接电合盖动作。任何一项不一致都算失败，此时不要直接删除程序，请在问卷里记录并联系邀请人。</p>
     <p class="done">完成恢复检查后，再提交测试问卷。</p>
+    <div class="buttons">
+      <a class="btn primary" href="https://my.feishu.cn/share/base/form/shrcnoULuHL5RS4qGMTcQRfGAVh" target="_blank" rel="noopener">提交飞书测试问卷</a>
+    </div>
   </section>
 
   <section class="english" lang="en">
     <h2>English summary</h2>
-    <p class="muted">Verify the ZIP checksum, record the original power settings, test the tray toggle, start the heartbeat, complete the applicable ten-minute lid-close or lock-and-display-off test, then disable the utility and verify every original power value has been restored. Keep laptops connected to AC power on a hard, ventilated surface. Stop immediately if verification fails, the laptop becomes unusually hot, a warning appears, or settings cannot be restored.</p>
+    <p class="muted">Open the anonymous Feishu form, verify the ZIP checksum, record the original power settings, test the tray toggle, start the heartbeat if needed, complete the applicable five-minute lid-close or lock-and-display-off test, then disable the utility and verify every original power value has been restored. Keep laptops connected to AC power on a hard, ventilated surface. Stop immediately if verification fails, the laptop becomes unusually hot, a warning appears, or settings cannot be restored.</p>
   </section>
 
   <footer>Agent Night Watch · Windows invitation beta · No passwords, serial numbers, private paths, or full work logs are requested.</footer>
