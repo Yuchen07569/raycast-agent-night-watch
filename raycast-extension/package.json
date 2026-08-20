@@ -19,7 +19,7 @@
   "categories": ["System"],
   "keywords": ["agent", "awake", "closed lid", "clamshell", "coffee", "sleep"],
   "dependencies": {
-    "@raycast/api": "^1.104.24",
+    "@raycast/api": "^2.0.3",
     "react": "^19.0.0"
   },
   "devDependencies": {
