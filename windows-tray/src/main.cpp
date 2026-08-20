@@ -502,9 +502,17 @@ std::optional<std::uint32_t> parse_process_id(const wchar_t* value) {
 }  // namespace
 }  // namespace agent_night_watch::windows
 
-int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int) {
+int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE,
+                      _In_ PWSTR, _In_ int) {
   using namespace agent_night_watch::windows;
-  CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+  const HRESULT com_result =
+      CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+  const bool uninitialize_com = SUCCEEDED(com_result);
+  if (FAILED(com_result) && com_result != RPC_E_CHANGED_MODE) {
+    MessageBoxW(nullptr, L"Windows COM initialization failed.",
+                L"Agent Night Watch", MB_OK | MB_ICONERROR);
+    return 5;
+  }
 
   int argument_count = 0;
   wchar_t** arguments = CommandLineToArgvW(GetCommandLineW(), &argument_count);
@@ -516,13 +524,13 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int) {
     const int result = process_id && !instance_id.empty()
                            ? run_watchdog(*process_id, instance_id)
                            : 4;
-    CoUninitialize();
+    if (uninitialize_com) CoUninitialize();
     return result;
   }
   if (arguments != nullptr) LocalFree(arguments);
 
   TrayApplication application(instance);
   const int result = application.run();
-  CoUninitialize();
+  if (uninitialize_com) CoUninitialize();
   return result;
 }
