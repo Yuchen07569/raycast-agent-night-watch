@@ -67,6 +67,7 @@
   .btn-primary:hover { transform:translateY(-2px); box-shadow:0 12px 30px rgba(245,166,35,.4); text-decoration:none; }
   .btn-ghost { border:1px solid var(--line); color:var(--ink); }
   .btn-ghost:hover { background:rgba(255,255,255,.04); transform:translateY(-2px); text-decoration:none; }
+  .btn-disabled { border:1px solid var(--line); color:var(--muted); opacity:.7; cursor:not-allowed; }
   .hero .scroll { margin-top:3rem; color:var(--muted); font-size:.85rem; opacity:.7; letter-spacing:.08em; }
 
   /* ---------- Layout container ---------- */
@@ -95,6 +96,14 @@
   .scene .ic { color:var(--accent); font-size:1.4rem; margin-bottom:.5rem; }
   .scene h3 { font-size:1rem; margin-bottom:.35rem; }
   .scene p { color:var(--muted); font-size:.92rem; }
+
+  /* ---------- Windows beta ---------- */
+  .beta { border-top:1px solid var(--line); }
+  .beta-panel { margin-top:2rem; padding:1.6rem; background:linear-gradient(145deg,#141f3d,#101830); border:1px solid var(--line); border-radius:var(--radius); }
+  .beta-meta { display:flex; flex-wrap:wrap; gap:.6rem; margin:.9rem 0 1.2rem; }
+  .beta-note { color:var(--muted); font-size:.93rem; margin-top:1rem; }
+  .beta-warning { color:#ffd28a; border-left:3px solid var(--accent); padding:.8rem 1rem; margin-top:1.2rem; background:rgba(245,166,35,.07); }
+  .english { margin-top:1.5rem; padding-top:1.3rem; border-top:1px solid var(--line); color:var(--muted); font-size:.92rem; }
 
   /* ---------- Evidence ---------- */
   .evidence { background:var(--bg-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
@@ -150,9 +159,10 @@
     </svg>
   </div>
   <h1>替 AI 守夜的<br><span class="amber">咖啡杯</span></h1>
-  <p class="sub">合盖 MacBook，长任务的 Agent 照常继续跑。<br>你安心睡，它盯着电脑不许睡。</p>
+  <p class="sub">MacBook 合盖守夜已经可用，Windows 便携版现正邀请测试。<br>你安心睡，它盯着电脑不许睡。</p>
   <div class="cta-row">
-    <a class="btn btn-primary" href="#install">从源码安装</a>
+    <a class="btn btn-primary" href="#windows-beta">下载 Windows 测试版</a>
+    <a class="btn btn-ghost" href="#install">安装 macOS 版</a>
     <a class="btn btn-ghost" href="https://github.com/Yuchen07569/raycast-agent-night-watch" target="_blank" rel="noopener">GitHub →
     </a>
   </div>
@@ -210,6 +220,37 @@
   </div>
 </section>
 
+<!-- ================= Windows Beta ================= -->
+<section id="windows-beta" class="beta">
+  <div class="wrap">
+    <span class="kicker">Windows 邀请测试</span>
+    <h2>不用 GitHub，也能直接下载</h2>
+    <p class="lead">这是一个不占任务栏的便携托盘工具。解压后运行，左键咖啡杯即可开关。当前仅支持 Windows 10 22H2 / Windows 11 x64。</p>
+    <div class="beta-panel">
+      <span class="pill">v0.2.0-beta.1</span>
+      <h3>Agent Night Watch Windows x64</h3>
+      <div class="beta-meta">
+        <span class="pill">ZIP · 约 155 KB</span>
+        <span class="pill">便携版</span>
+        <span class="pill">无需安装</span>
+        <span class="pill">无遥测</span>
+      </div>
+      <div class="cta-row" style="justify-content:flex-start;margin-top:0;">
+        <a class="btn btn-primary" href="downloads/windows-v0.2.0-beta.1/AgentNightWatch-0.2.0-beta.1-windows-x64.zip" download>直接下载安装包</a>
+        <a class="btn btn-ghost" href="downloads/windows-v0.2.0-beta.1/AgentNightWatch-0.2.0-beta.1-windows-x64.zip.sha256" download>下载 SHA-256 校验文件</a>
+        <a class="btn btn-ghost" href="windows-beta-test.html">打开分步测试指引</a>
+        <span class="btn btn-disabled" aria-disabled="true" title="问卷仍是未发布草稿">分步测试问卷（草稿待发布）</span>
+      </div>
+      <p class="beta-warning"><strong>邀请测试提醒：</strong>这是尚未签名的 Beta，Windows 可能显示 SmartScreen 提示。请只从本页下载；测试时保持电脑接电并放在硬质、通风的桌面上。若出现异常发热、风扇持续高速或设置无法恢复，请立即停止测试。</p>
+      <p class="beta-note">笔记本测试包含“接电合盖继续运行”；台式机测试包含“锁屏并熄灭显示器”。问卷会带着测试者逐步记录原设置、执行测试并确认恢复，不要求提交密码、设备序列号或完整私人日志。</p>
+      <div class="english" lang="en">
+        <strong>English</strong><br>
+        Portable invitation beta for Windows 10 22H2 and Windows 11 x64. No installer, runtime, telemetry, or GitHub account is required. The unsigned beta may trigger a SmartScreen warning. Keep laptops connected to AC power on a hard, ventilated surface and stop immediately if the device becomes unusually hot or power settings cannot be restored.
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ================= FAQ ================= -->
 <section>
   <div class="wrap">
@@ -221,7 +262,7 @@
       <details class="qa"><summary>它对所有 Agent 都有效吗？</summary><div class="a">它控制的是 macOS 合盖睡眠本身，不只是某个 Agent。只要进程不被合盖睡眠打断，就能持续运行。</div></details>
       <details class="qa"><summary>为什么不直接用 caffeinate？</summary><div class="a">caffeinate 通常防空闲睡眠，管不到 MacBook 合盖的睡眠逻辑。它显式控制 SleepDisabled，针对合盖场景更准。</div></details>
       <details class="qa"><summary>它安全吗？会碰我的密码吗？</summary><div class="a">不做任何密码/凭据存储。开启触发 macOS 自带管理员授权，不配免密 sudo，不装特权助手。MIT 开源可审计。</div></details>
-      <details class="qa"><summary>会损坏电脑吗？</summary><div class="a">不会。它只切换一个系统睡眠开关。建议合盖运行时放通风处避免过热。</div></details>
+      <details class="qa"><summary>会损坏电脑吗？</summary><div class="a">Night Watch 不会强制屏幕常亮，但合盖持续运算仍会产生热量。请把电脑放在硬质、通风的桌面上，严禁放进包里或遮挡散热；高负载任务建议开盖并让屏幕自行熄灭。合盖前请移除键盘膜、掌托膜和较厚的摄像头盖。</div></details>
       <details class="qa"><summary>能和其他工具共用吗？</summary><div class="a">可以。它只控制合盖睡眠覆盖，不与 IDEs、终端、其他 Raycast 扩展冲突。</div></details>
     </div>
   </div>
@@ -230,9 +271,9 @@
 <!-- ================= Install CTA ================= -->
 <section id="install" class="cta-final" style="background:var(--bg-soft);border-top:1px solid var(--line);">
   <div class="wrap">
-    <span class="kicker">开源</span>
+    <span class="kicker">macOS · 开源</span>
     <h2>合盖睡觉，它继续跑</h2>
-    <p class="lead" style="margin:1rem auto 0;">Agent Night Watch，MIT 开源。</p>
+    <p class="lead" style="margin:1rem auto 0;">macOS 版目前通过 Raycast 从源码安装，Agent Night Watch 以 MIT 许可证开源。</p>
     <pre class="code"><span class="c">$</span> git clone https://github.com/Yuchen07569/raycast-agent-night-watch.git
 <span class="c">$</span> cd raycast-agent-night-watch/raycast-extension
 <span class="c">$</span> npm ci

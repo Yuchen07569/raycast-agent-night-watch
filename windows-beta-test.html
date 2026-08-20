@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Night Watch · Windows 邀请测试指引</title>
+<meta name="description" content="Agent Night Watch Windows 便携版分步测试指引。">
+<style>
+  :root { --bg:#0a0f1e; --soft:#101830; --card:#111a33; --ink:#f2f4f8; --muted:#9aa5c0; --accent:#f5a623; --line:#1e2a4a; --ok:#4ade80; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,"PingFang SC","Microsoft YaHei",system-ui,sans-serif; color:var(--ink); background:var(--bg); line-height:1.7; }
+  a { color:var(--accent); }
+  .wrap { max-width:820px; margin:auto; padding:3rem 1.2rem 5rem; }
+  .back { display:inline-block; margin-bottom:2rem; text-decoration:none; }
+  h1 { font-size:clamp(2rem,6vw,3.2rem); line-height:1.15; margin:.5rem 0 1rem; }
+  h2 { font-size:1.35rem; margin:0 0 .7rem; }
+  .lead,.muted { color:var(--muted); }
+  .tag { display:inline-block; color:var(--accent); border:1px solid rgba(245,166,35,.3); border-radius:999px; padding:.2rem .65rem; font-size:.8rem; }
+  .warning { margin:1.6rem 0; padding:1rem 1.1rem; background:rgba(245,166,35,.08); border-left:3px solid var(--accent); color:#ffd28a; }
+  .step { margin:1rem 0; padding:1.3rem; border:1px solid var(--line); border-radius:14px; background:var(--card); }
+  .step p,.step li { color:var(--muted); }
+  code,pre { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  pre { overflow:auto; white-space:pre; background:#080d1a; border:1px solid var(--line); border-radius:10px; padding:1rem; color:var(--ink); }
+  .buttons { display:flex; flex-wrap:wrap; gap:.8rem; margin:1.4rem 0; }
+  .btn { display:inline-block; padding:.75rem 1.15rem; border-radius:999px; text-decoration:none; font-weight:650; }
+  .primary { background:var(--accent); color:#141414; }
+  .ghost { border:1px solid var(--line); color:var(--ink); }
+  .done { color:var(--ok); }
+  .english { margin-top:3rem; padding-top:2rem; border-top:1px solid var(--line); }
+  footer { margin-top:3rem; color:var(--muted); font-size:.9rem; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <a class="back" href="./#windows-beta">← 返回下载页</a>
+  <span class="tag">Windows 邀请测试 · v0.2.0-beta.1</span>
+  <h1>跟着这 8 步完成测试</h1>
+  <p class="lead">建议用手机打开这份指引和测试问卷，在 Windows 电脑上操作。每完成一步就记录结果；中途停止也可以提交已经完成的部分。</p>
+
+  <div class="warning"><strong>先保证安全。</strong>笔记本必须接电并放在硬质、平整、通风的桌面上。不要放进包里，不要遮挡散热，不要关闭 SmartScreen、Defender、Smart App Control 或公司的安全策略。若校验失败、机身明显异常发热、出现警告状态或原设置无法恢复，请立即停止。</div>
+
+  <section class="step">
+    <h2>1. 下载并校验</h2>
+    <p>从本页下载 ZIP 和 SHA-256 文件。两份文件放在同一个文件夹，在 PowerShell 中运行：</p>
+    <pre>Get-FileHash .\AgentNightWatch-0.2.0-beta.1-windows-x64.zip -Algorithm SHA256</pre>
+    <p>结果必须是：</p>
+    <pre>77B3DB86619D507E897C0FCFC5AEFC7B048EDCEE540D0F7ABF9EF763892BA58A</pre>
+    <div class="buttons">
+      <a class="btn primary" href="downloads/windows-v0.2.0-beta.1/AgentNightWatch-0.2.0-beta.1-windows-x64.zip" download>下载 Windows x64 ZIP</a>
+      <a class="btn ghost" href="downloads/windows-v0.2.0-beta.1/AgentNightWatch-0.2.0-beta.1-windows-x64.zip.sha256" download>下载校验文件</a>
+    </div>
+    <p>校验不一致就停止，不要解压或运行。若 Windows 只提示“未知发布者”，先记录提示；仅在校验一致且你愿意继续时运行，不要关闭系统保护。</p>
+  </section>
+
+  <section class="step">
+    <h2>2. 记录原来的电源设置</h2>
+    <p>打开 Windows 电源设置，记下接电自动睡眠时间。笔记本还要记下接电和电池两种状态下的合盖动作。这里只记录，不要手动修改。</p>
+  </section>
+
+  <section class="step">
+    <h2>3. 检查咖啡杯开关</h2>
+    <p>解压 ZIP 并运行 <code>AgentNightWatch.exe</code>。它没有主窗口；若没看到咖啡杯，请点任务栏右侧的 <code>^</code>。无水汽表示关闭，有水汽表示运行。左键开启，状态稳定后再左键关闭一次。</p>
+  </section>
+
+  <section class="step">
+    <h2>4. 开始写入心跳</h2>
+    <p>在普通 PowerShell 窗口运行下面的命令并保持窗口打开。结束时按 <code>Ctrl+C</code>。</p>
+    <pre>$path = "$env:USERPROFILE\Desktop\agent-night-watch-windows-heartbeat-$(Get-Date -Format yyyyMMdd-HHmmss).log"
+while ($true) {
+  "$(Get-Date -Format o) pid=$PID" | Add-Content -LiteralPath $path
+  Start-Sleep -Seconds 5
+}</pre>
+  </section>
+
+  <section class="step">
+    <h2>5. 笔记本接电合盖 10 分钟</h2>
+    <p>笔记本保持接电，开启守夜并确认咖啡杯有水汽。合盖 10 分钟，再开盖检查心跳日志。正常结果是没有接近 10 分钟的时间空档。若机身明显异常发热，请立即开盖并关闭守夜。台式机跳过这一步。</p>
+  </section>
+
+  <section class="step">
+    <h2>6. 检查锁屏熄屏</h2>
+    <p>接电运行时，右键咖啡杯选择 <strong>Lock and Turn Off Displays</strong>，等待 10 分钟后唤醒显示器。Windows 应要求密码或 Windows Hello，心跳不应出现 10 分钟空档。</p>
+  </section>
+
+  <section class="step">
+    <h2>7. 可选的拔电对照</h2>
+    <p>这一步只给笔记本。接电开启后合盖，再拔掉电源，等待超过原电池睡眠时间。设备应改用原电池策略，程序进入电池暂停状态。无法安全完成就选择“未执行”。</p>
+  </section>
+
+  <section class="step">
+    <h2>8. 关闭并逐项确认恢复</h2>
+    <p>左键咖啡杯关闭守夜，再右键选择 <strong>Exit</strong>。逐项对比测试前记录的接电睡眠时间和接电合盖动作。任何一项不一致都算失败，此时不要直接删除程序，请在问卷里记录并联系邀请人。</p>
+    <p class="done">完成恢复检查后，再提交测试问卷。</p>
+  </section>
+
+  <section class="english" lang="en">
+    <h2>English summary</h2>
+    <p class="muted">Verify the ZIP checksum, record the original power settings, test the tray toggle, start the heartbeat, complete the applicable ten-minute lid-close or lock-and-display-off test, then disable the utility and verify every original power value has been restored. Keep laptops connected to AC power on a hard, ventilated surface. Stop immediately if verification fails, the laptop becomes unusually hot, a warning appears, or settings cannot be restored.</p>
+  </section>
+
+  <footer>Agent Night Watch · Windows invitation beta · No passwords, serial numbers, private paths, or full work logs are requested.</footer>
+</main>
+</body>
+</html>
