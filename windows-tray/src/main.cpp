@@ -2,6 +2,7 @@
 
 #include "agent_night_watch/power_session.hpp"
 
+#include <objbase.h>
 #include <shellapi.h>
 
 #include <array>
