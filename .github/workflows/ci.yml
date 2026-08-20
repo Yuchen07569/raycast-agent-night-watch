@@ -55,7 +55,8 @@ jobs:
             Sort-Object FullName |
             Select-Object -Last 1
           if (-not $scanner) { throw "Microsoft Defender CLI was not found" }
-          & $scanner.FullName -Scan -ScanType 3 -File "out/windows-x64/Release/AgentNightWatch.exe" -DisableRemediation
+          $executable = (Resolve-Path "out/windows-x64/Release/AgentNightWatch.exe").Path
+          & $scanner.FullName -Scan -ScanType 3 -File $executable
           if ($LASTEXITCODE -ne 0) { throw "Microsoft Defender scan failed with exit code $LASTEXITCODE" }
       - name: Package portable Beta and SPDX SBOM
         run: ./.github/scripts/package_windows_beta.ps1 -BuildDirectory out/windows-x64/Release -OutputDirectory out/release
